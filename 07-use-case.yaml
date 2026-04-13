@@ -35,7 +35,7 @@ spec:
   selector:
     matchLabels:
       app: web-store
-  replicas: 5
+  replicas: 3
   template:
     metadata:
       labels:
@@ -43,16 +43,14 @@ spec:
     spec:
       affinity:
         podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - web-store
-              topologyKey: topology.kubernetes.io/zone
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - web-store
+            topologyKey: "kubernetes.io/hostname"
         podAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
